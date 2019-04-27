@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    openapi_rspec (0.1.0)
+    openapi_rspec (0.2.0)
       dry-configurable (>= 0.8)
       openapi_builder (>= 0.1)
       openapi_validator (>= 0.3)
