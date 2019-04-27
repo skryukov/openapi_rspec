@@ -28,8 +28,8 @@ module OpenapiRspec
         header key, value
       end
       request(request_uri(doc), method: method, **request_params)
-      response = last_response
-      @result.validate_response(body: response.body, code: response.status)
+      @response = last_response
+      @result.validate_response(body: @response.body, code: @response.status)
       @result.valid?
     end
 
@@ -58,8 +58,8 @@ module OpenapiRspec
     end
 
     def failure_message
-      if last_response
-        (%W(Response: #{last_response.body}) + @result.errors).join("\n")
+      if @response
+        (%W(Response: #{@response.body}) + @result.errors).join("\n")
       else
         @result.errors.join("\n")
       end
