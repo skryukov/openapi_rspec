@@ -2,7 +2,7 @@ require "openapi_rspec"
 
 class HelloWorld
   def call(env)
-      [200, {"Content-Type" => "application/json"}, ['[{"id": 23, "name": "Misha"}]']]
+      [200, {"Content-Type" => "application/json"}, ['[{"id": 23, "name": "Lucky"}]']]
   end
 end
 
@@ -16,12 +16,23 @@ RSpec.describe "API v1" do
     expect(subject).to validate_documentation
   end
 
-  context "/pets" do
-    let(:uri) { "/pets" }
-    let(:method) { :get }
+  get "/pets" do
+    headers { { "X-Client-Device" => "ios" } }
+    query { { tags: ["lucky"] } }
 
-    specify do
-      expect(subject).to validate_request(method: method, path: uri, code: 200)
-    end
+    validate_code(200)
+  end
+
+  post "/pets" do
+    params { { name: "Lucky" } }
+
+    validate_code(200)
+  end
+
+  get "/pets/{id}" do
+    let(:id) { 23 }
+    params { { name: "Lucky" } }
+
+    validate_code(200)
   end
 end

@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["s.g.kryukov@yandex.ru"]
 
   spec.summary = "Test your API against OpenApi v3 documentation"
-  spec.homepage = "https://github.com/llcmedsolutions/openapi_rspec"
+  spec.homepage = "https://github.com/medsolutions/openapi_rspec"
   spec.license = "MIT"
 
   spec.files = Dir["LICENSE.txt", "README.md", "lib/**/*"]

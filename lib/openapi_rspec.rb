@@ -3,7 +3,9 @@ require "openapi_validator"
 require "openapi_builder"
 require "rspec"
 
+require "openapi_rspec/helpers"
 require "openapi_rspec/matchers"
+require "openapi_rspec/module_helpers"
 require "openapi_rspec/version"
 
 module OpenapiRspec
@@ -17,6 +19,8 @@ module OpenapiRspec
   end
 
   RSpec.configure do |config|
+    config.extend ModuleHelpers
+    config.include Helpers
     config.include Matchers
   end
 end
