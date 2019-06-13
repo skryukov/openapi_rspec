@@ -3,18 +3,19 @@ module OpenapiRspec
     def expect_validate_request(code, metadata: {})
       expect(subject).to validate_request(**request_params(metadata), code: code)
     end
-    
+
     def request_params(metadata)
-      Hash.new.tap do |hash|
+      {}.tap do |hash|
         hash[:method] = defined?(http_method) ? http_method : metadata[:method]
         hash[:path] = defined?(uri) ? uri : metadata[:uri]
+        hash[:media_type] = openapi_rspec_media_type if defined? openapi_rspec_media_type
         hash[:params] = path_params(hash[:path])
         hash[:params].merge!(openapi_rspec_params) if defined? openapi_rspec_params
         hash[:headers] = openapi_rspec_headers if defined? openapi_rspec_headers
         hash[:query] = openapi_rspec_query if defined? openapi_rspec_query
       end
     end
-    
+
     def path_params(path)
       path_params = {}
       path.scan(/\{([^\}]*)\}/).each do |param|

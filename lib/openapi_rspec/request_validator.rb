@@ -9,19 +9,21 @@ module OpenapiRspec
       OpenapiRspec.app
     end
 
-    def initialize(path:, method:, code:, params: {}, query: {}, headers: {})
+    def initialize(path:, method:, code:, media_type: "application/json", params: {}, query: {}, headers: {})
       @path = path
       @method = method
       @code = code
+      @media_type = media_type
       @query = query
       @headers = headers
       @params = params
     end
 
-    attr_reader :method, :path, :code, :query, :headers, :params
+    attr_reader :method, :path, :code, :media_type, :query, :headers, :params
 
     def matches?(doc)
-      @result = doc.validate_request(path: path, method: method, code: code)
+      @result = doc.validate_request(path: path, method: method, code: code, media_type: media_type)
+
       return false unless @result.valid?
 
       headers.each do |key, value|
