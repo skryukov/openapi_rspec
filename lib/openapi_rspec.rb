@@ -18,6 +18,17 @@ module OpenapiRspec
     OpenapiValidator.call(doc, **params)
   end
 
+  def self.api_by_path(openapi_path, **params)
+    session = ActionDispatch::Integration::Session.new(Rails.application)
+    begin
+      session.get(openapi_path)
+    rescue StandardError
+      raise "Unable to perform GET request for swagger json: #{openapi_path} - #{$ERROR_INFO}."
+    end
+    parsed_doc = JSON.parse(session.response.body)
+    OpenapiValidator::Validator.new(parsed_doc, **params)
+  end
+
   RSpec.configure do |config|
     config.extend ModuleHelpers
     config.include Helpers
