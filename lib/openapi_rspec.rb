@@ -2,7 +2,7 @@ require "dry-configurable"
 require "openapi_validator"
 require "openapi_builder"
 require "rspec"
-
+require "English"
 require "openapi_rspec/helpers"
 require "openapi_rspec/matchers"
 require "openapi_rspec/module_helpers"
