@@ -19,7 +19,7 @@ module OpenapiRspec
       @params = params
     end
 
-    attr_reader :method, :path, :code, :media_type, :query, :headers, :params
+    attr_reader :method, :path, :code, :media_type, :query, :headers, :params, :response
 
     def matches?(doc)
       @result = doc.validate_request(path: path, method: method, code: code, media_type: media_type)

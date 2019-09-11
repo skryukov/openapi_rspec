@@ -1,9 +1,5 @@
 module OpenapiRspec
   module Helpers
-    def expect_validate_request(code, metadata: {})
-      expect(subject).to validate_request(**request_params(metadata), code: code)
-    end
-
     def request_params(metadata)
       {}.tap do |hash|
         hash[:method] = defined?(http_method) ? http_method : metadata[:method]

@@ -20,7 +20,10 @@ RSpec.describe "API v1" do
     headers { { "X-Client-Device" => "ios" } }
     query { { tags: ["lucky"] } }
 
-    validate_code(200)
+    validate_code(200) do |validator|
+      result = JSON.parse(validator.response.body)
+      expect(result.first["name"]).to eq("Lucky")
+    end
   end
 
   post "/pets" do

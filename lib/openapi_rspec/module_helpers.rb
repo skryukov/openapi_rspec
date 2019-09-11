@@ -2,8 +2,9 @@ module OpenapiRspec
   module ModuleHelpers
     def validate_code(code, &block)
       specify do |example|
-        expect_validate_request(code, metadata: example.metadata[:openapi_rspec])
-        instance_eval &block if block_given?
+        validator = RequestValidator.new(**request_params(example.metadata[:openapi_rspec]), code: code)
+        expect(subject).to validator
+        instance_exec validator, &block if block_given?
       end
     end
 
