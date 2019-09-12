@@ -22,11 +22,19 @@ module OpenapiRspec
     session = Rack::Test::Session.new(config.app)
     begin
       response = session.get(openapi_path)
-    rescue StandardError
-      raise "Unable to perform GET request for swagger json: #{openapi_path} - #{$!}."
+    rescue StandardError => e
+      raise "Unable to perform GET request for swagger json: #{openapi_path} - #{e}."
     end
-    parsed_doc = JSON.parse(response.body)
-    OpenapiValidator::Validator.new(parsed_doc, **params)
+
+    parsed_doc = case openapi_path.split(".").last
+                 when "yml", "yaml"
+                   YAML.load(response.body)
+                 when "json"
+                   JSON.parse(response.body)
+                 else
+                   raise "Unable to parse OpenAPI doc, '#{openapi_path}' is undefined format"
+                 end
+    OpenapiValidator.call(parsed_doc, **params)
   end
 
   RSpec.configure do |config|
