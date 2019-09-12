@@ -2,7 +2,7 @@ require "dry-configurable"
 require "openapi_validator"
 require "openapi_builder"
 require "rspec"
-require "English"
+
 require "openapi_rspec/helpers"
 require "openapi_rspec/matchers"
 require "openapi_rspec/module_helpers"
@@ -19,13 +19,13 @@ module OpenapiRspec
   end
 
   def self.api_by_path(openapi_path, **params)
-    session = ActionDispatch::Integration::Session.new(Rails.application)
+    session = Rack::Test::Session.new(config.app)
     begin
-      session.get(openapi_path)
+      response = session.get(openapi_path)
     rescue StandardError
-      raise "Unable to perform GET request for swagger json: #{openapi_path} - #{$ERROR_INFO}."
+      raise "Unable to perform GET request for swagger json: #{openapi_path} - #{$!}."
     end
-    parsed_doc = JSON.parse(session.response.body)
+    parsed_doc = JSON.parse(response.body)
     OpenapiValidator::Validator.new(parsed_doc, **params)
   end
 
