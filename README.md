@@ -30,13 +30,152 @@ Or install it yourself as:
 
 ## Usage
 
-See spec/example_spec.rb
+Add `spec/openapi_helper.rb` and set `OpenapiRspec.config.app`:
 
-## Development
+```ruby
+# spec/openapi_helper.rb
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+require "rails_helper"
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+OpenapiRspec.config.app = Rails.application # or any other Rack app, thanks to rack-test gem
+```
+
+Then configure path to your documentation. You can use documentation defined as:
+- static file with `.yaml`/`.yml` or `.json` extension
+- path in your application with `.yaml`/`.yml` or `.json` extension
+- specification splitted with the [Redoc.ly's approach](https://github.com/ReDoc-ly/create-openapi-repo) (also see [openapi_builder](https://github.com/medsolutions/openapi_builder))
+
+```ruby
+# spec/openapi_helper.rb
+
+#...
+
+# static file
+API_V1 = OpenapiRspec.api("./spec/data/openapi.yml")
+
+# application path
+API_V2 = OpenapiRspec.api_by_path("/openapi.json")
+
+# splitted specification
+API_V3 = OpenapiRspec.api("/openapi.json", build: true)
+```
+
+
+### Validate documentation against the OpenAPI 3.0 Specification:
+
+```ruby
+RSpec.describe "API v1" do
+  subject { API_V1 }
+
+  it "is valid OpenAPI spec" do
+    expect(subject).to validate_documentation
+  end
+end
+```
+
+#### Validate documentation against custom schema
+
+You can validate documentation against additional custom schemata, for example, to enforce organization documentation standards:
+
+```ruby
+# spec/openapi_helper.rb
+
+#...
+
+API_V1 = OpenapiRspec.api("./spec/data/openapi.yml", additional_schemas: ["./spec/data/acme_schema.yml"])
+```
+
+```ruby
+# openapi_v1_spec.rb
+
+RSpec.describe "API v1" do
+  subject { API_V1 }
+
+  it "is valid OpenAPI and ACME spec" do
+    expect(subject).to validate_documentation
+  end
+end
+```
+
+### Validate endpoints
+
+General example:
+
+```ruby
+require "openapi_rspec"
+
+RSpec.describe "API v1 /pets" do
+
+  subject { API_V1 }
+
+  get "/pets" do
+    headers { { "X-Client-Device" => "ios" } }
+    query { { tags: ["lucky"] } }
+
+    validate_code(200) do |validator|
+      result = JSON.parse(validator.response.body)
+      expect(result.first["name"]).to eq("Lucky")
+    end
+  end
+
+  post "/pets" do
+    params { { name: "Lucky" } }
+
+    validate_code(201)
+  end
+
+  get "/pets/{id}" do
+    let(:id) { 23 }
+
+    validate_code(200)
+
+    context "when pet not found" do
+      let(:id) { "bad_id" }
+
+      validate_code(404)
+    end
+  end
+```
+
+#### Prefix API requests
+
+To prefix each request with `"/some_path"` use `:api_base_path` option:
+
+```ruby
+# spec/openapi_helper.rb
+
+#...
+
+API_V1 = OpenapiRspec.api("./spec/data/openapi.yml", api_base_path: "/some_path")
+```
+
+#### Validate that all documented routes are tested
+
+To validate this we will use a small hack:
+
+```ruby
+# spec/openapi_helper.rb
+
+# ...
+
+API_V1_DOC = OpenapiRspec.api("./openapi/openapi.yml", build: true, api_base_path: "/api/v1")
+
+RSpec.configure do |config|
+  config.after(:suite) do
+    unvalidated_requests = API_V1_DOC.unvalidated_requests
+
+    if unvalidated_requests.any? && ENV["TEST_COVERAGE"]
+      raise unvalidated_requests.map { |path| "Path #{path.join(' ')} not tested" }.join("\n")
+    end
+  end
+end
+```
+
+Then run your specs:
+
+    $ TEST_COVERAGE=1 rspec
+
+This will raise an error if any of the documented paths not gonna be validated.
 
 ## Contributing
 
