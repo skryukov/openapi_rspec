@@ -137,6 +137,83 @@ RSpec.describe "API v1 /pets" do
   end
 ```
 
+#### Helper methods
+
+To validate response use:
+- `get`, `post`, `put`, `patch`, `delete` and `head` methods to describe operation with the path
+- `validate_code` method with passed expected code
+
+```ruby
+# ...
+  get "/pets" do
+    validate_code(200)
+  end
+# ...
+```
+
+To set **request body** use `params` helper method:
+
+```ruby
+# ...
+  post "/pets" do
+    params { { name: "Lucky" } }
+
+    validate_code(201)
+  end
+# ...
+```
+
+To set **path parameter** use `let` helper method:
+
+```ruby
+# ...
+  get "/pets/{id}" do
+    let(:id) { 23 }
+
+    validate_code(200)
+  end
+# ...
+```
+
+To set **query parameters** use `query` helper method:
+
+```ruby
+# ...
+  get "/pets" do
+    query { { name: "lucky" } }
+
+    validate_code(200)
+  end
+# ...
+```
+
+To set **header parameters** use `headers` helper method:
+
+```ruby
+# ...
+  get "/pets" do
+    headers { { "X-User-Token" => "bad_token" } }
+
+    validate_code(401)
+  end
+# ...
+```
+
+#### Custom response validation
+
+You can access response to add custom validation like this:
+
+```ruby
+# ...
+  get "/pets" do
+    validate_code(200) do |validator|
+      result = JSON.parse(validator.response.body)
+      expect(result).not_to be_empty
+    end
+  end
+# ...
+```
+
 #### Prefix API requests
 
 To prefix each request with `"/some_path"` use `:api_base_path` option:
@@ -175,7 +252,7 @@ Then run your specs:
 
     $ TEST_COVERAGE=1 rspec
 
-This will raise an error if any of the documented paths not gonna be validated.
+This will raise an error if any of the documented paths are not validated.
 
 ## Contributing
 
