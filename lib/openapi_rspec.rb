@@ -5,6 +5,7 @@ require "rspec"
 require "openapi_rspec/helpers"
 require "openapi_rspec/matchers"
 require "openapi_rspec/module_helpers"
+require "openapi_rspec/schema_loader"
 require "openapi_rspec/version"
 
 module OpenapiRspec
@@ -16,23 +17,9 @@ module OpenapiRspec
     OpenapiValidator.call(doc, **params)
   end
 
-  def self.api_by_path(openapi_path, **params)
-    session = Rack::Test::Session.new(config.app)
-    begin
-      response = session.get(openapi_path)
-    rescue StandardError => e
-      raise "Unable to perform GET request for swagger json: #{openapi_path} - #{e}."
-    end
-
-    parsed_doc = case openapi_path.split(".").last
-                 when "yml", "yaml"
-                   YAML.load(response.body)
-                 when "json"
-                   JSON.parse(response.body)
-                 else
-                   raise "Unable to parse OpenAPI doc, '#{openapi_path}' is undefined format"
-                 end
-    OpenapiValidator.call(parsed_doc, **params)
+  def self.api_by_path(path, **params)
+    doc = SchemaLoader.call(path)
+    api(doc, **params)
   end
 
   RSpec.configure do |config|
