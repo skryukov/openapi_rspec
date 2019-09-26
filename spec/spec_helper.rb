@@ -13,6 +13,7 @@ end
 
 require "bundler/setup"
 require "openapi_rspec"
+require "support/hello_world_app"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

@@ -42,7 +42,7 @@ OpenapiRspec.config.app = Rails.application # or any other Rack app, thanks to r
 
 Then configure path to your documentation. You can use documentation defined as:
 - static file with `.yaml`/`.yml` or `.json` extension
-- path in your application with `.yaml`/`.yml` or `.json` extension
+- uri to OpenAPI schema in your application
 
 ```ruby
 # spec/openapi_helper.rb

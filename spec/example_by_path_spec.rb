@@ -1,5 +1,4 @@
 require "openapi_rspec"
-require "./spec/support/hello_world_app.rb"
 
 OpenapiRspec.config.app = HelloWorldApp.new
 
