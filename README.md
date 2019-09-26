@@ -43,7 +43,6 @@ OpenapiRspec.config.app = Rails.application # or any other Rack app, thanks to r
 Then configure path to your documentation. You can use documentation defined as:
 - static file with `.yaml`/`.yml` or `.json` extension
 - path in your application with `.yaml`/`.yml` or `.json` extension
-- specification splitted with the [Redoc.ly's approach](https://github.com/ReDoc-ly/create-openapi-repo) (also see [openapi_builder](https://github.com/medsolutions/openapi_builder))
 
 ```ruby
 # spec/openapi_helper.rb
@@ -55,9 +54,6 @@ API_V1 = OpenapiRspec.api("./spec/data/openapi.yml")
 
 # application path
 API_V2 = OpenapiRspec.api_by_path("/openapi.json")
-
-# splitted specification
-API_V3 = OpenapiRspec.api("/openapi.json", build: true)
 ```
 
 
@@ -235,7 +231,7 @@ To validate this we will use a small hack:
 
 # ...
 
-API_V1_DOC = OpenapiRspec.api("./openapi/openapi.yml", build: true, api_base_path: "/api/v1")
+API_V1_DOC = OpenapiRspec.api("./openapi/openapi.yml", api_base_path: "/api/v1")
 
 RSpec.configure do |config|
   config.after(:suite) do
