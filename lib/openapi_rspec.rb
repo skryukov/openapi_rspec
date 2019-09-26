@@ -1,6 +1,5 @@
 require "dry-configurable"
 require "openapi_validator"
-require "openapi_builder"
 require "rspec"
 
 require "openapi_rspec/helpers"
@@ -13,8 +12,7 @@ module OpenapiRspec
 
   setting :app, reader: true
 
-  def self.api(doc, build: false, **params)
-    doc = OpenapiBuilder.call(doc).data if build
+  def self.api(doc, **params)
     OpenapiValidator.call(doc, **params)
   end
 

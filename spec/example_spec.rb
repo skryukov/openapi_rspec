@@ -5,7 +5,7 @@ OpenapiRspec.config.app = HelloWorldApp.new
 
 RSpec.describe "API v1" do
   # do not forget additional_schemas
-  subject { OpenapiRspec.api("./spec/data/openapi.yml", build: false, api_base_path: "/v1") }
+  subject { OpenapiRspec.api("./spec/data/openapi.yml", api_base_path: "/v1") }
 
   it "is valid openapi spec" do
     expect(subject).to validate_documentation
