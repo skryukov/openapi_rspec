@@ -1,5 +1,7 @@
-require "openapi_rspec/documentation_validator"
-require "openapi_rspec/request_validator"
+# frozen_string_literal: true
+
+require 'openapi_rspec/documentation_validator'
+require 'openapi_rspec/request_validator'
 
 module OpenapiRspec
   module Matchers

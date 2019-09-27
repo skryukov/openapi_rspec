@@ -1,5 +1,7 @@
-require "rack/test"
-require "uri"
+# frozen_string_literal: true
+
+require 'rack/test'
+require 'uri'
 
 module OpenapiRspec
   class RequestValidator
@@ -9,7 +11,7 @@ module OpenapiRspec
       OpenapiRspec.app
     end
 
-    def initialize(path:, method:, code:, media_type: "application/json", params: {}, query: {}, headers: {})
+    def initialize(path:, method:, code:, media_type: 'application/json', params: {}, query: {}, headers: {})
       @path = path
       @method = method
       @code = code
@@ -51,7 +53,7 @@ module OpenapiRspec
     def request_params
       {
         headers: headers,
-        params: params,
+        params: params
       }
     end
 
@@ -61,7 +63,7 @@ module OpenapiRspec
 
     def failure_message
       if @response
-        (%W(Response: #{@response.body}) + @result.errors).join("\n")
+        (%W[Response: #{@response.body}] + @result.errors).join("\n")
       else
         @result.errors.join("\n")
       end

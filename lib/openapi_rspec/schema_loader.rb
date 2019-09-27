@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenapiRspec
   module SchemaLoader
     def self.call(path, app: OpenapiRspec.config.app)
@@ -11,7 +13,7 @@ module OpenapiRspec
       rescue JSON::ParserError
         YAML.safe_load(schema)
       end
-    rescue => e
+    rescue StandardError => e
       raise "Unable to parse OpenAPI schema. #{e}"
     end
 
@@ -20,10 +22,10 @@ module OpenapiRspec
       response = session.get(path)
 
       raise "Response code: #{response.status}" unless response.successful?
-      raise "Empty body" if response.body.empty?
-      
+      raise 'Empty body' if response.body.empty?
+
       response.body
-    rescue => e
+    rescue StandardError => e
       raise "Unable to perform GET request for the OpenAPI schema '#{path}'. #{e}"
     end
   end

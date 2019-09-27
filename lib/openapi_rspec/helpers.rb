@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenapiRspec
   module Helpers
     def request_params(metadata)

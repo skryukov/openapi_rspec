@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenapiRspec
   module ModuleHelpers
     def validate_code(code, &block)

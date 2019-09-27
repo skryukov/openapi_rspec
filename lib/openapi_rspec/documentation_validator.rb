@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenapiRspec
   class DocumentationValidator
     def matches?(doc)
@@ -6,7 +8,7 @@ module OpenapiRspec
     end
 
     def description
-      "be a valid documentation"
+      'be a valid documentation'
     end
 
     def failure_message
