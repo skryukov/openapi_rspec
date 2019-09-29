@@ -4,7 +4,8 @@ module OpenapiRspec
   module ModuleHelpers
     def validate_code(code, &block)
       specify do |example|
-        validator = RequestValidator.new(**request_params(example.metadata[:openapi_rspec]), code: code)
+        metadata = example.metadata[:openapi_rspec]
+        validator = RequestValidator.new(**request_params(metadata), code: code)
         expect(subject).to validator
         instance_exec validator, &block if block_given?
       end
@@ -51,10 +52,7 @@ module OpenapiRspec
     end
 
     def process(method, uri)
-      metadata[:openapi_rspec] = {
-        uri: uri,
-        method: method
-      }
+      metadata[:openapi_rspec] = { uri: uri, method: method }
       context "#{method.to_s.upcase} #{uri}" do
         yield if block_given?
       end

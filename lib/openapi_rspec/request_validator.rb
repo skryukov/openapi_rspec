@@ -1,41 +1,50 @@
 # frozen_string_literal: true
 
+require 'dry-initializer'
 require 'rack/test'
 require 'uri'
 
 module OpenapiRspec
   class RequestValidator
+    extend Dry::Initializer
     include Rack::Test::Methods
+
+    option :path
+    option :method
+    option :code
+    option :media_type, default: proc { 'application/json' }
+    option :params, default: proc { {} }
+    option :query, default: proc { {} }
+    option :headers, default: proc { {} }
+
+    attr_reader :response, :result
 
     def app
       OpenapiRspec.app
     end
 
-    def initialize(path:, method:, code:, media_type: 'application/json', params: {}, query: {}, headers: {})
-      @path = path
-      @method = method
-      @code = code
-      @media_type = media_type
-      @query = query
-      @headers = headers
-      @params = params
-    end
-
-    attr_reader :method, :path, :code, :media_type, :query, :headers, :params, :response
-
     def matches?(doc)
       @result = doc.validate_request(path: path, method: method, code: code, media_type: media_type)
+      return false unless result.valid?
 
-      return false unless @result.valid?
-
-      headers.each do |key, value|
-        header key, value
-      end
-      request(request_uri(doc), method: method, **request_params)
-      @response = last_response
-      @result.validate_response(body: @response.body, code: @response.status)
-      @result.valid?
+      perform_request(doc)
+      result.validate_response(body: response.body, code: response.status)
+      result.valid?
     end
+
+    def description
+      "return valid response with code #{code} on `#{method.to_s.upcase} #{path}`"
+    end
+
+    def failure_message
+      if response
+        (%W[Response: #{response.body}] + result.errors).join("\n")
+      else
+        result.errors.join("\n")
+      end
+    end
+
+    private
 
     def request_uri(doc)
       path.scan(/\{([^\}]*)\}/).each do |param|
@@ -50,23 +59,19 @@ module OpenapiRspec
       "#{doc.api_base_path}#{path}?#{URI.encode_www_form(query)}"
     end
 
+    def perform_request(doc)
+      headers.each do |key, value|
+        header key, value
+      end
+      request(request_uri(doc), method: method, **request_params)
+      @response = last_response
+    end
+
     def request_params
       {
         headers: headers,
         params: params
       }
-    end
-
-    def description
-      "return valid response with code #{code} on `#{method.to_s.upcase} #{path}`"
-    end
-
-    def failure_message
-      if @response
-        (%W[Response: #{@response.body}] + @result.errors).join("\n")
-      else
-        @result.errors.join("\n")
-      end
     end
   end
 end

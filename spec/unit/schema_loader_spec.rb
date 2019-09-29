@@ -27,7 +27,8 @@ RSpec.describe OpenapiRspec::SchemaLoader do
 
   context 'when wrong yaml format' do
     it 'raises an error' do
-      expect { subject.call('/bad.yaml', app: app) }.to raise_error(/Unable to parse OpenAPI schema/)
+      expect { subject.call('/bad.yaml', app: app) }
+        .to raise_error(/Unable to parse OpenAPI schema/)
     end
   end
 end
