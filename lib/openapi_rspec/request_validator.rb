@@ -12,10 +12,10 @@ module OpenapiRspec
     option :path
     option :method
     option :code
-    option :media_type, default: proc { 'application/json' }
-    option :params, default: proc { {} }
-    option :query, default: proc { {} }
-    option :headers, default: proc { {} }
+    option :media_type
+    option :params
+    option :query
+    option :headers
 
     attr_reader :response, :result
 

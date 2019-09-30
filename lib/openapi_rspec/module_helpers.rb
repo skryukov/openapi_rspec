@@ -53,6 +53,10 @@ module OpenapiRspec
 
     def process(method, uri)
       metadata[:openapi_rspec] = { uri: uri, method: method }
+      let(:openapi_rspec_media_type) { 'application/json' }
+      let(:openapi_rspec_params) { {} }
+      let(:openapi_rspec_headers) { {} }
+      let(:openapi_rspec_query) { {} }
       context "#{method.to_s.upcase} #{uri}" do
         yield if block_given?
       end
