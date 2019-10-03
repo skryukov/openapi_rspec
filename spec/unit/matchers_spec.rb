@@ -30,10 +30,10 @@ RSpec.describe OpenapiRspec::Matchers do
     it 'returns new RequestValidator instance' do
       allow(OpenapiRspec::RequestValidator).to receive(:new).and_return('result')
 
-      result = subject.validate_request(some: "params")
+      result = subject.validate_request(some: 'params')
 
       expect(result).to eq('result')
-      expect(OpenapiRspec::RequestValidator).to have_received(:new).with(some: "params")
+      expect(OpenapiRspec::RequestValidator).to have_received(:new).with(some: 'params')
     end
   end
 end
