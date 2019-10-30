@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'dry-initializer'
-require 'rack/test'
-require 'uri'
+require "dry-initializer"
+require "rack/test"
+require "uri"
 
 module OpenapiRspec
   class RequestValidator
@@ -70,7 +70,7 @@ module OpenapiRspec
     def request_params
       {
         headers: headers,
-        params: params
+        params: params,
       }
     end
   end

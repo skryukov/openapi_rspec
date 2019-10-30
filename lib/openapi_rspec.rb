@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'dry-configurable'
-require 'openapi_validator'
-require 'rspec'
+require "dry-configurable"
+require "openapi_validator"
+require "rspec"
 
-require 'openapi_rspec/helpers'
-require 'openapi_rspec/matchers'
-require 'openapi_rspec/module_helpers'
-require 'openapi_rspec/schema_loader'
-require 'openapi_rspec/version'
+require "openapi_rspec/helpers"
+require "openapi_rspec/matchers"
+require "openapi_rspec/module_helpers"
+require "openapi_rspec/schema_loader"
+require "openapi_rspec/version"
 
 module OpenapiRspec
   extend Dry::Configurable

@@ -8,7 +8,7 @@ module OpenapiRspec
     end
 
     def description
-      'be a valid OpenAPI documentation'
+      "be a valid OpenAPI documentation"
     end
 
     def failure_message

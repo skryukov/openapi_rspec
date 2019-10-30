@@ -11,7 +11,7 @@ module OpenapiRspec
         params: path_params(path).merge!(openapi_rspec_params),
         headers: openapi_rspec_headers,
         query: openapi_rspec_query,
-        media_type: openapi_rspec_media_type
+        media_type: openapi_rspec_media_type,
       }
     end
 
