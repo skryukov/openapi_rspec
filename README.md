@@ -7,6 +7,7 @@
 [![Build Status](https://travis-ci.org/medsolutions/openapi_rspec.svg?branch=master)][travis]
 [![Code Climate](https://codeclimate.com/github/medsolutions/openapi_rspec/badges/gpa.svg)][codeclimate]
 [![Test Coverage](https://codeclimate.com/github/medsolutions/openapi_rspec/badges/coverage.svg)][codeclimate]
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://github.com/testdouble/standard)
 
 Test your API against OpenApi v3 documentation
 
