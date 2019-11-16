@@ -13,10 +13,10 @@ after_script:
 script:
   - bundle exec rake
 rvm:
-  - 2.6.2
-  - 2.5.5
-  - 2.4.6
-  - jruby-9.2.6.0
+  - 2.6.5
+  - 2.5.7
+  - 2.4.9
+  - jruby-9.2.9.0
 env:
   global:
     - COVERAGE=true
