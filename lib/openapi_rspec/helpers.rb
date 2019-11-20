@@ -5,10 +5,16 @@ module OpenapiRspec
     def request_params(metadata)
       path = defined?(uri) ? uri : metadata[:uri]
       method = defined?(http_method) ? http_method : metadata[:method]
+      params = if openapi_rspec_params.is_a?(Hash)
+        path_params(path).merge!(openapi_rspec_params)
+      else
+        openapi_rspec_params
+      end
+
       {
         method: method,
         path: path,
-        params: path_params(path).merge!(openapi_rspec_params),
+        params: params,
         headers: openapi_rspec_headers,
         query: openapi_rspec_query,
         media_type: openapi_rspec_media_type,
