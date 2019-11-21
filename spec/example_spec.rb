@@ -8,6 +8,8 @@ RSpec.describe "API v1" do
   # do not forget additional_schemas
   subject { OpenapiRspec.api("./spec/data/openapi.yml", api_base_path: "/v1") }
 
+  media_type { "application/json" }
+
   it "is valid openapi spec" do
     expect(subject).to validate_documentation
   end

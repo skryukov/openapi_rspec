@@ -60,18 +60,21 @@ module OpenapiRspec
     end
 
     def perform_request(doc)
+      header("Content-Type", media_type)
       headers.each do |key, value|
-        header key, value
+        header(key, value)
       end
-      request(request_uri(doc), method: method, **request_params)
+      request(request_uri(doc), method: method, headers: headers, **request_params)
       @response = last_response
     end
 
     def request_params
-      {
-        headers: headers,
-        params: params,
-      }
+      case media_type
+      when "application/json"
+        {input: JSON.dump(params)}
+      else
+        {params: params}
+      end
     end
   end
 end
