@@ -148,7 +148,7 @@ To validate response use:
 # ...
 ```
 
-To set **request body** use `params` helper method:
+To set **request body** (as form data) use `params` helper method and provide a `Hash`:
 
 ```ruby
 # ...
@@ -159,6 +159,19 @@ To set **request body** use `params` helper method:
   end
 # ...
 ```
+
+To set **raw request body** use the `params` helper method and provide a `String`:
+
+```ruby
+# ...
+  post "/pets" do
+    params { JSON.dump(name: "Lucky") }
+
+    validate_code(201)
+  end
+# ...
+```
+
 
 To set **path parameter** use `let` helper method:
 

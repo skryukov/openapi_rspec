@@ -20,4 +20,16 @@ RSpec.describe "API v1 (by path)" do
       expect(result.first["name"]).to eq("Lucky")
     end
   end
+
+  post "/pets" do
+    headers do
+      { 'CONTENT_TYPE' => 'application/json' }
+    end
+
+    params do
+      JSON.dump(name: "Lucky")
+    end
+
+    validate_code(200)
+  end
 end
