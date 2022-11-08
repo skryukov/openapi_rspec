@@ -12,26 +12,88 @@ RSpec.describe "API v1" do
     expect(subject).to validate_documentation
   end
 
-  get "/pets" do
-    headers { {"X-Client-Device" => "ios"} }
-    query { {tags: ["lucky"]} }
+  describe "/pets" do
+    describe "POST" do
+      post "/pets" do
+        params { {name: "Lucky"} }
 
-    validate_code(200) do |validator|
-      result = JSON.parse(validator.response.body)
-      expect(result.first["name"]).to eq("Lucky")
+        validate_code(200)
+      end
+    end
+
+    describe "GET" do
+      get "/pets" do
+        headers { {"X-Client-Device" => "ios"} }
+        query { {tags: ["lucky"]} }
+
+        validate_code(200) do |validator|
+          result = JSON.parse(validator.response.body)
+          expect(result.first["name"]).to eq("Lucky")
+        end
+      end
     end
   end
 
-  post "/pets" do
-    params { {name: "Lucky"} }
+  describe "/pets/{id}" do
+    describe "GET" do
+      get "/pets/{id}" do
+        let(:id) { 23 }
 
-    validate_code(200)
-  end
+        validate_code(200)
+      end
+    end
 
-  get "/pets/{id}" do
-    let(:id) { 23 }
-    params { {name: "Lucky"} }
+    describe "PATCH" do
+      context "with form data" do
+        patch "/pets/{id}" do
+          let(:id) { 23 }
+          params { { name: new_name } }
 
-    validate_code(200)
+          let(:new_name) { "Luke" }
+
+          let(:expected_result) do
+            {
+              "id" => id,
+              "name" => new_name
+            }
+          end
+
+          validate_code(200) do |validator|
+            result = JSON.parse(validator.response.body)
+            expect(result).to eq expected_result
+          end
+        end
+      end
+
+      context "with JSON" do
+        patch "/pets/{id}" do
+          let(:id) { 23 }
+          headers { { 'CONTENT_TYPE' => 'application/json' } }
+          params { JSON.dump(name: new_name) }
+
+          let(:new_name) { "Luke" }
+
+          let(:expected_result) do
+            {
+              "id" => id,
+              "name" => new_name
+            }
+          end
+
+          validate_code(200) do |validator|
+            result = JSON.parse(validator.response.body)
+            expect(result).to eq expected_result
+          end
+        end
+      end
+    end
+
+    describe "DELETE" do
+      delete "/pets/{id}" do
+        let(:id) { 23 }
+
+        validate_code(204)
+      end
+    end
   end
 end
