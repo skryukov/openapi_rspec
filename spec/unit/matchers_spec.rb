@@ -3,17 +3,9 @@
 require "spec_helper"
 
 RSpec.describe OpenapiRspec::Matchers do
-  before(:each) do
-    class Foo
-      include OpenapiRspec::Matchers
-    end
+  subject do
+    Class.new { include OpenapiRspec::Matchers }.new
   end
-
-  after(:each) do
-    Object.send(:remove_const, :Foo)
-  end
-
-  subject { Foo.new }
 
   context "#validate_documentation" do
     it "returns new DocumentationValidator instance" do

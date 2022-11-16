@@ -30,5 +30,6 @@ jobs:
           bundler-cache: true
       - name: Run StandardRB
         run: bundle exec standardrb
+        if: ${{ matrix.ruby }} == "3.1"
       - name: Run RSpec
         run: bundle exec rspec

@@ -23,7 +23,7 @@ RSpec.describe "API v1 (by path)" do
 
   post "/pets" do
     headers do
-      { 'CONTENT_TYPE' => 'application/json' }
+      {"CONTENT_TYPE" => "application/json"}
     end
 
     params do

@@ -56,12 +56,12 @@ module OpenapiRspec
     end
 
     def request_uri(doc)
-      path.scan(/\{([^\}]*)\}/).each do |param|
+      path.scan(/\{([^}]*)\}/).each do |param|
         key = param.first.to_sym
         if path_params && path_params[key]
           @path = path.gsub "{#{key}}", path_params[key].to_s
         else
-          raise URI::InvalidURIError, "No substitution data found for {#{key}}"\
+          raise URI::InvalidURIError, "No substitution data found for {#{key}}" \
             " to test the path #{path}."
         end
       end
@@ -71,7 +71,7 @@ module OpenapiRspec
     def request_params
       {
         headers: headers,
-        params: params,
+        params: params
       }
     end
   end

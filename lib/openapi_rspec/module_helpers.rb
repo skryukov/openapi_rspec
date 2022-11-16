@@ -7,7 +7,7 @@ module OpenapiRspec
         metadata = example.metadata[:openapi_rspec]
         validator = RequestValidator.new(**request_params(metadata), code: code)
         expect(subject).to validator
-        instance_exec validator, &block if block_given?
+        instance_exec validator, &block if block
       end
     end
 

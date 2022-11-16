@@ -47,7 +47,7 @@ RSpec.describe "API v1" do
       context "with form data" do
         patch "/pets/{id}" do
           let(:id) { 23 }
-          params { { name: new_name } }
+          params { {name: new_name} }
 
           let(:new_name) { "Luke" }
 
@@ -68,7 +68,7 @@ RSpec.describe "API v1" do
       context "with JSON" do
         patch "/pets/{id}" do
           let(:id) { 23 }
-          headers { { 'CONTENT_TYPE' => 'application/json' } }
+          headers { {"CONTENT_TYPE" => "application/json"} }
           params { JSON.dump(name: new_name) }
 
           let(:new_name) { "Luke" }

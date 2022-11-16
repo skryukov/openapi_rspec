@@ -13,13 +13,13 @@ module OpenapiRspec
         path_params: path_params(path),
         headers: openapi_rspec_headers,
         query: openapi_rspec_query,
-        media_type: openapi_rspec_media_type,
+        media_type: openapi_rspec_media_type
       }
     end
 
     def path_params(path)
       path_params = {}
-      path.scan(/\{([^\}]*)\}/).each do |param|
+      path.scan(/\{([^}]*)\}/).each do |param|
         key = param.first.to_sym
         path_params[key] = public_send(key) if respond_to?(key)
       end
