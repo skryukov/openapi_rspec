@@ -7,7 +7,3 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gemspec
 
 gem "standard", group: %i[development test]
-
-group :test do
-  gem "simplecov", require: false, platform: :mri
-end
