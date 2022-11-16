@@ -1,12 +1,9 @@
 [gem]: https://rubygems.org/gems/openapi_rspec
-[travis]: https://travis-ci.org/medsolutions/openapi_rspec
-[codeclimate]: https://codeclimate.com/github/medsolutions/openapi_rspec
+[codeclimate]: https://codeclimate.com/github/skryukov/openapi_rspec
 
 # openapi_rspec
 [![Gem Version](https://badge.fury.io/rb/openapi_rspec.svg)][gem]
-[![Build Status](https://travis-ci.org/medsolutions/openapi_rspec.svg?branch=master)][travis]
-[![Code Climate](https://codeclimate.com/github/medsolutions/openapi_rspec/badges/gpa.svg)][codeclimate]
-[![Test Coverage](https://codeclimate.com/github/medsolutions/openapi_rspec/badges/coverage.svg)][codeclimate]
+[![Build](https://github.com/skryukov/openapi_rspec/workflows/Build/badge.svg)](https://github.com/skryukov/openapi_rspec/actions)
 [![Ruby Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://github.com/testdouble/standard)
 
 Test your API against OpenApi v3 documentation
@@ -266,7 +263,7 @@ This will raise an error if any of the documented paths are not validated.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/medsolutions/openapi_rspec.
+Bug reports and pull requests are welcome on GitHub at https://github.com/skryukov/openapi_rspec.
 
 ## License
 
