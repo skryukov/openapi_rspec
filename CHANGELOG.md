@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning].
 
 ## [0.6.0] - 2022-10-16
 
+### Changed
+
+- rack-test dependency updated to 2.0. ([@ThomasKoppensteiner])
+
 ### Fixed
 
 - Path-param handling for requests with JSON bodies. ([@ThomasKoppensteiner])
